@@ -53,7 +53,7 @@ class Plane():
 	def dist(self,x,y,z):
 		return np.abs(self.raw_dist(x,y,z))
 	def side(self,x,y,z):
-		return ~(self.raw_dist(x,y,z) > 0 ) # reverse for test
+		return (self.raw_dist(x,y,z) > 0 ) 
 	def get_Z(self,x,y):
 		X = np.stack((x, y), axis=-1)
 		return self.model.predict(X)
@@ -191,7 +191,6 @@ while plt.fignum_exists(fig.number):
 		# show r2
 		r2 = current_plane.r2
 		ax.title.set_text(f'{r2}')
-		print(to_capture.value,to_capture.r2)
 		if start_flag or ( to_capture.value and r2>to_capture.r2 ) :
 			if start_flag : to_capture.value = True
 			else: to_capture.value = False
@@ -223,8 +222,7 @@ while plt.fignum_exists(fig.number):
 		# plot hand landmarks that go through plane
 		ax_point_dist_cam.clear()
 		ax_point_dist_cam.imshow(frameRGB)
-		# ax_point_dist_cam.scatter(x,-y,s=custom_norm(plane.dist(x, y, z))*~plane.side(x, y, z),c='w')
-		dist = custom_norm(plane.dist(x, y, z))*~plane.side(x, y, z)
+		dist = custom_norm(plane.dist(x, y, z))*plane.side(x, y, z)
 		ax_point_dist_cam.scatter(x*frameRGB.shape[1],y*frameRGB.shape[0],c=dist)
 
 		# plot plane
